@@ -7,18 +7,18 @@ const authTeacher = require("../../../ecomBackend/src/auth/authTeacher");
 router.post("/createBatch", authTeacher, (req, res) => {
 
     var {courseId, name, date, time} = req.body;
-    Course.findOne({courseId: courseId}, (err, batch) => {
+    Course.findOne({courseId: courseId}, (err, course) => {
         if(err){
             res.status(400).json({
                 "message": "Unable to search for the course"
             })
         }
-        if(!batch){
+        if(!course){
             res.status(404).json({
                 "message": "Course Not found!"
             })
         }
-        if(batch){
+        if(course){
             const teacherId = req.teacher._id;
             var mydata = new Batch({courseId, teacherId, name, date, time});
             mydata.save()
